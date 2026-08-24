@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qec-gate-calibration"
+version = "0.1.0"
+description = "Syndrome-informed gate calibration experiments with Qiskit Aer"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "qiskit>=2.2,<3",
+    "qiskit-aer>=0.17,<0.18",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ipykernel>=6",
+    "jupyterlab>=4",
+    "matplotlib>=3.8",
+    "pandas>=2.2",
+    "pylatexenc>=2.10",
+    "pytest>=8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
