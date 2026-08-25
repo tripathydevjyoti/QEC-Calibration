@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/qec_calibration/__init__.py
+src/qec_calibration/ideal_bit_flip_code.py
+src/qec_gate_calibration.egg-info/PKG-INFO
+src/qec_gate_calibration.egg-info/SOURCES.txt
+src/qec_gate_calibration.egg-info/dependency_links.txt
+src/qec_gate_calibration.egg-info/requires.txt
+src/qec_gate_calibration.egg-info/top_level.txt
+tests/test_ideal_bit_flip_code.py
+tests/test_reference_model.py

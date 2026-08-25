@@ -1,0 +1,10 @@
+qiskit<3,>=2.2
+qiskit-aer<0.18,>=0.17
+
+[dev]
+ipykernel>=6
+jupyterlab>=4
+matplotlib>=3.8
+pandas>=2.2
+pylatexenc>=2.10
+pytest>=8

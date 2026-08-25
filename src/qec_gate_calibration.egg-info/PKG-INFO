@@ -1,8 +1,24 @@
+Metadata-Version: 2.4
+Name: qec-gate-calibration
+Version: 0.1.0
+Summary: Syndrome-informed gate calibration experiments with Qiskit Aer
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: qiskit<3,>=2.2
+Requires-Dist: qiskit-aer<0.18,>=0.17
+Provides-Extra: dev
+Requires-Dist: ipykernel>=6; extra == "dev"
+Requires-Dist: jupyterlab>=4; extra == "dev"
+Requires-Dist: matplotlib>=3.8; extra == "dev"
+Requires-Dist: pandas>=2.2; extra == "dev"
+Requires-Dist: pylatexenc>=2.10; extra == "dev"
+Requires-Dist: pytest>=8; extra == "dev"
+
 # QEC Gate Calibration
 
-This repository contains a verified implementation of the ideal three-qubit
-bit-flip repetition code in Qiskit Aer and the first noisy experiment: one
-encoding CNOT with a coherent target-qubit over-rotation.
+This repository begins with a verified implementation of the ideal three-qubit
+bit-flip repetition code in Qiskit Aer. Later stages will add coherent gate
+errors and syndrome-informed calibration.
 
 ## Repository workflow
 
@@ -27,7 +43,7 @@ The notebook has a matching `# %%` Python file. It can be opened as an
 interactive notebook in VS Code and gives GitHub a clean, line-by-line diff of
 the analysis code.
 
-## What the implementation contains
+## What the ideal implementation contains
 
 - Three data qubits encoding one logical qubit:
   - `|0_L> = |000>`
@@ -38,10 +54,6 @@ the analysis code.
 - Optional insertion of one physical `X` error.
 - Mid-circuit syndrome measurement and classically conditioned recovery.
 - Automated tests for every correctable single-qubit bit flip.
-- A faulty first encoding gate modeled as
-  `faulty_CX(0, 1) = Rx_1(epsilon) CX(0, 1)`.
-- Analytic and sampled syndrome probabilities for that one-gate error.
-- An error-angle sweep that will become the input to closed-loop calibration.
 
 The conceptual syndrome ordering used throughout the project is `(s0, s1)`:
 
@@ -91,12 +103,10 @@ Then open:
 
 ```text
 notebooks/01_ideal_qec_walkthrough.ipynb
-notebooks/02_single_gate_error_analysis.ipynb
 ```
 
-The first notebook verifies ideal syndrome extraction and active recovery. The
-second compares the Aer result for one faulty encoding CNOT against
-`P(11) = sin(epsilon/2)^2`, then sweeps the error angle.
+The notebook draws the circuit, constructs the complete syndrome truth table,
+plots syndrome histograms, and verifies active recovery.
 
 ## Run the tests
 
@@ -110,8 +120,7 @@ pytest -q
 - [x] Syndrome truth-table verification.
 - [x] Syndrome-conditioned recovery verification.
 - [x] Visual ideal-QEC analysis notebook.
-- [x] One coherent `Rx` gate error.
-- [x] Analytic-versus-Aer syndrome comparison.
+- [ ] One coherent `Rx` gate error.
 - [ ] Syndrome-rate calibration objective.
 - [ ] Closed-loop optimization of one correction angle.
 - [ ] Multiple gate errors and multi-parameter optimization.
