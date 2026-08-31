@@ -41,7 +41,9 @@ the analysis code.
 - A faulty first encoding gate modeled as
   `faulty_CX(0, 1) = Rx_1(epsilon) CX(0, 1)`.
 - Analytic and sampled syndrome probabilities for that one-gate error.
-- An error-angle sweep that will become the input to closed-loop calibration.
+- An error-angle sweep that exposes the syndrome-rate calibration landscape.
+- An explicit compensating `Rx(-theta)` control and a shot-based,
+  coarse-to-fine calibration loop.
 
 The conceptual syndrome ordering used throughout the project is `(s0, s1)`:
 
@@ -92,11 +94,13 @@ Then open:
 ```text
 notebooks/01_ideal_qec_walkthrough.ipynb
 notebooks/02_single_gate_error_analysis.ipynb
+notebooks/03_single_gate_calibration.ipynb
 ```
 
 The first notebook verifies ideal syndrome extraction and active recovery. The
-second compares the Aer result for one faulty encoding CNOT against
-`P(11) = sin(epsilon/2)^2`, then sweeps the error angle.
+second compares one faulty encoding CNOT against
+`P(11) = sin(epsilon/2)^2`. The third calibrates a compensating angle by
+minimizing the sampled nonzero-syndrome rate.
 
 ## Run the tests
 
@@ -112,12 +116,13 @@ pytest -q
 - [x] Visual ideal-QEC analysis notebook.
 - [x] One coherent `Rx` gate error.
 - [x] Analytic-versus-Aer syndrome comparison.
-- [ ] Syndrome-rate calibration objective.
-- [ ] Closed-loop optimization of one correction angle.
+- [x] Syndrome-rate calibration objective.
+- [x] Closed-loop optimization of one correction angle.
 - [ ] Multiple gate errors and multi-parameter optimization.
 
 ## Scope of the code
 
-This code corrects one `X` error occurring between encoding and syndrome
-extraction. It does not correct phase errors, two simultaneous data-qubit
-errors, or faults in the syndrome-extraction circuit itself.
+The QEC circuit corrects one `X` error occurring between encoding and syndrome
+extraction. The current calibration model targets one coherent `Rx` residual
+on the first encoding CNOT. It does not yet calibrate phase errors, multiple
+simultaneous gate errors, readout errors, or syndrome-extraction faults.
