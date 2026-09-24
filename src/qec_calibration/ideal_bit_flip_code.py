@@ -180,7 +180,7 @@ def _parse_recovery_counts(raw_counts: dict[str, int]) -> dict[tuple[str, str], 
             raise ValueError(f"Unexpected recovery count key: {raw_key!r}")
 
         # Classical registers are displayed in reverse register-creation order:
-        # ``data_out syndrome``. Syndrome itself is displayed as ``s1s0``.
+        # ``data_out syndrome``, syndrome itself is displayed as ``s1s0``.
         data_out, raw_syndrome = parts
         parsed[(data_out, raw_syndrome[::-1])] += count
     return dict(parsed)
