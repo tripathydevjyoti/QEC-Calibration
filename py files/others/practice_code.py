@@ -30,3 +30,16 @@ def add_encoding(
 
     circuit.cx(data[0],data[1])
     circuit.cx(data[0],data[2])
+
+
+from __future__ import annotations
+
+import math
+from collections.abc import Mapping
+from dataclasses import dataclass
+from typing import Final, Literal
+
+import numpy as np
+from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister, transpile
+from qiskit.circuit import ParameterExpression, ParameterVector
+from qiskit_aer im
