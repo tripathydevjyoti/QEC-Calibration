@@ -42,4 +42,36 @@ from typing import Final, Literal
 import numpy as np
 from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister, transpile
 from qiskit.circuit import ParameterExpression, ParameterVector
-from qiskit_aer im
+from qiskit_aer import AerSimulator
+
+from .ideal_bit_flip_code import (
+    EXPECTED_SYNDROMES,
+    _normalize_syndrome_counts,
+    _parse_recovery_counts,
+    _validate_inputs,
+)
+from .single_gate_error import SYNDROMES, counts_to_probabilities
+
+@dataclass(frozen=True)
+class CNOTLocation:
+
+    gate_id: str
+    stage: Literal["encoding", "syndrome"]
+    control: str
+    target: str
+    control_index: int
+    target_index: int
+
+CNOT_LOCATIONS: Final[tuple[CNOTLocation, ...]] = (
+    CNOTLocation("enc_01", "encoding", "data[0]", "data[1]", 0, 1),
+)
+
+CNOT_LOCATION_BY_ID: Final[tuple[str, CNOTLocation]] = {
+    location.gate_id: location for location in CNOT_LOCATIONS
+}
+
+def make_cnot_parameter_vector(name: str = "theta") -> ParameterVector:
+
+    if not isinstance(name, str) or not name:
+        raise ValueError("name must be a non empty string")
+    return ParameterVector(name, len(CNOT_GATE_IDS))
