@@ -29,7 +29,8 @@ def add_encoding(
         circuit.X(data[0])
 
     circuit.cx(data[0],data[1])
-    circuit.cx(data[0],data[2])
+    circuit.cx(data[0],data[2]):
+
 
 
 from __future__ import annotations
@@ -75,3 +76,40 @@ def make_cnot_parameter_vector(name: str = "theta") -> ParameterVector:
     if not isinstance(name, str) or not name:
         raise ValueError("name must be a non empty string")
     return ParameterVector(name, len(CNOT_GATE_IDS))
+
+
+
+
+import math
+from collections.abc import Mapping
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class CNOTLocation:
+    gate_id: str
+    stage: Literal["encoding", "syndrome"]
+    control_label: str
+    target_label: str
+    control_index: int
+    target_index: int 
+
+
+def make_cnot_parameter_vector(
+        name: str = "theta"
+) -> ParameterVector:
+
+    if not isinstance(name, str) or not name:
+        raise ValueError("param name must be a string")
+    return ParameterVector(name, len(CNOT_GATE_IDS))
+
+@dataclass(frozen = True)
+class ParametrizedCNOTCircuit:
+    circuit: QuantumCircuit
+    parameters: ParameterVector
+    parameter_index: Mapping[str, int]
+
+    def bind(
+        self, 
+        angles: Mapping[str, float] | None = None,
+    ) -> QuantumCircuit:
+        
