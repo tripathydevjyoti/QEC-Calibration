@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "qec-gate-calibration"
 version = "0.1.0"
-description = "Syndrome-informed gate calibration experiments with Qiskit Aer"
+description = "Finite-shot SPSA calibration of 3- and 5-qubit repetition codes"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -20,7 +20,6 @@ dev = [
     "jupyterlab>=4",
     "matplotlib>=3.8",
     "pandas>=2.2",
-    "pylatexenc>=2.10",
     "pytest>=8",
 ]
 
