@@ -16,14 +16,29 @@ to gate error.
 | `01_three_bit_single_fault.ipynb` | Does a finite-shot single-fault syndrome sweep match theory? |
 | `02_three_bit_spsa_calibration.ipynb` | Can Qiskit SPSA calibrate one through six simultaneous CNOT parameters? |
 | `03_five_bit_spsa_calibration.ipynb` | How does the same experiment behave with 12 CNOT parameters? |
+| `04_repeated_round_syndromes.ipynb` | How are repeated stabilizer measurements stored while data is retained? |
+| `05_repeated_round_spsa_scaling.ipynb` | How do one through six active CNOT angles calibrate with one, three, or five rounds per shot? |
 
-The no-physical-error training loss is `L(theta)=1-P(syndrome=00...0)`.
+The no-physical-error single-round training loss is `L(theta)=1-P(syndrome=00...0)`.
 By default each optimization uses 1,024 shots per objective evaluation and
 independent 4,096-shot initial/final validation. Notebook 01 compares sampled
 probabilities with `sin²(theta/2)` theory. The SPSA notebooks plot every
 angle trajectory in a representative all-gate trial and summarize repeated
 trials by loss and angle norm. A low loss demonstrates the chosen circuit
 probe works; it need not uniquely identify every gate angle.
+
+Notebook 05 retains the encoded data through repeated syndrome extraction,
+including mid-circuit measurement and ancilla reset. Each shot returns its
+entire syndrome history and final data word. The optimizer uses **only** the
+average fraction of nonzero syndrome rounds, not a history-aware objective.
+Full-mode runs use 100 SPSA iterations, 1,024 training shots per evaluation,
+and independent 4,096-shot initial/final validation, with three seeded trials
+per configuration. It compares R=1 and R=3 for one through six active
+parameters and R=5 for sizes 3, 4, and 6 (45 runs total). The notebook
+defaults to a shorter `FAST_MODE=True` and writes full validation histories,
+angles, and optimizer traces into compressed `notebooks/results/repeated_scaling_*.json.gz`
+when executed. The older exploratory two-gate repeated-round run is not part
+of this experiment.
 
 The three-qubit circuit has two checks, six CNOTs, and corrects one X error.
 The five-qubit circuit has four checks, 12 CNOTs, and corrects up to two X
@@ -42,12 +57,14 @@ jupyter lab
 
 Open the notebooks in numerical order. Each imports its tested implementation
 from `src/qec_calibration`. Use `FAST_MODE=True` for quick exploratory runs;
-use the default settings for the full finite-shot experiments. Fixed seeds
+use `FAST_MODE=False` for the full finite-shot experiments (notebook 05
+defaults to a quick run). Fixed seeds
 make runs reproducible, subject to dependency-version changes.
 
 ```text
 src/qec_calibration/repetition_code.py  # circuits, syndromes, sampling, recovery
 src/qec_calibration/calibration.py      # SamplerV2 objective and Qiskit SPSA
+src/qec_calibration/repeated_rounds.py  # repeated measurements, histories, SPSA
 tests/                                  # ideal, theory, and optimizer checks
-notebooks/                              # three sequential experiments
+notebooks/                              # sequential experiments
 ```
